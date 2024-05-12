@@ -1,0 +1,109 @@
+= From PicoRuby to Twitch
+
+# : subtitle
+#    SUBTITLE
+: author
+   Joschka Schulz
+# : institution
+#    INSTITUTION
+# : content-source
+#    EVENT NAME
+# : date
+#    2024-05-11
+: allotted-time
+   30m
+# : start-time
+#    2024-05-11T21:59:27+02:00
+# : end-time
+#    2024-05-11T22:04:27+02:00
+# : theme
+#    default
+
+= Who am I
+
+  * Joschka
+  * (('wait')) working at Penseo GmbH
+  * (('wait')) love Ruby <3
+
+  # image
+  # src = img/me.jpg
+  # relative_height = 90
+  # align = right
+
+= Who am I
+  
+  * also like to burn myself on the soldering iron
+  * and searching for nice ways to combine hardware and software  
+
+= The Idea
+
+  * build a keyboard running ruby
+  * connect it somehow to something that can be animated
+  * use it as kind of 'vtuber' Avatar on Twitch
+
+  # mermaid
+  # relative_height = 90
+  graph LR;
+    Keyboard-->Keygrabber;
+    Keygrabber-->WebApp;
+    WebApp-->OBS;
+
+= Excurse Vtuber/PNGtuber
+
+  * no need to be camera ready 
+  * anonymity
+
+  # image
+  # src = img/vroid.png
+  # relative_height = 90
+  # align = left
+  # caption = VRoid Studio from pixiv
+
+= Lets go deeper in the rabbit whole
+
+= mruby
+
+  # image
+  # src = img/mruby.png
+  # relative_height = 70
+  # align = right
+
+  * for embed or linking in applications
+  * ruby 3.x syntax
+  * nice for rubists that like to solder
+
+= picoruby
+
+  * alternative mruby implementation
+  * aims for a perfect fit for raspberry pi pico
+
+= PRK
+
+  * keyboard firmware
+  * written in picoruby
+  * easy installation
+  * nice features
+
+  # image
+  # src = img/prk_features.png
+  # relative_height = 90
+  # align = right
+
+= PRK settings
+
+  * 6 buttons
+  * direct scan
+  * really not that complicated
+
+= RP2040
+
+  * Boot in 
+
+  # image
+  # src = img/soldered_1.jpg
+  # relative_height = 70
+  # align = right
+
+= The End
+
+  * Thank you a lot for listing :)

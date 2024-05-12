@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../keyboard"
+		},
+		{
+			"path": "../vogel"
+		}
+	],
+	"settings": {}
+}

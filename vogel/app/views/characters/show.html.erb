@@ -1,0 +1,24 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @character %>
+
+<button onclick="addHeadShakeAnimation()">Click me</button>
+
+<script type="text/javascript">
+  function addHeadShakeAnimation() {
+    addClassToElement('avatar-head', 'avatar-head-animation-shake');
+    setTimeout(function() {
+      removeClassFromElement('avatar-head', 'avatar-head-animation-shake');
+    }, 6000);
+  }
+
+  function addClassToElement(element, className) {
+    var element = document.getElementsByClassName(element)[0];
+    element.classList.add(className);
+  }
+
+  function removeClassFromElement(element, className) {
+    var element = document.getElementsByClassName(element)[0];
+    element.classList.remove(className);
+  }
+</script>
