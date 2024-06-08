@@ -1,7 +1,7 @@
-= From PicoRuby to Twitch
+= From picoruby to Twitch
 
-# : subtitle
-#    SUBTITLE
+: subtitle
+   or the inspiration you get after bringing 500 packages of Ahoj Brause to Japans Ruby Kaigi
 : author
    Joschka Schulz
 # : institution
@@ -22,8 +22,8 @@
 = Who am I
 
   * Joschka
-  * (('wait')) working at Penseo GmbH
-  * (('wait')) love Ruby <3
+  * working at Penseo GmbH
+  * love Ruby <3
 
   # image
   # src = img/me.jpg
@@ -32,21 +32,32 @@
 
 = Who am I
   
-  * also like to burn myself on the soldering iron
-  * and searching for nice ways to combine hardware and software  
+  * burn myself soldering iron
+  * drinking Ahoj Brause with\na lot of people in Japan
+  * I like to combine\nhardware and software  
+
+  # image
+  # src = img/ahoj.jpg
+  # relative_height = 90
+  # align = right
+
+= The Inspiration
+
+  # image
+  # src = img/keyboard_kaigi2023.jpg
+  # relative_height = 100
 
 = The Idea
 
   * build a keyboard running ruby
   * connect it somehow to something that can be animated
-  * use it as kind of 'vtuber' Avatar on Twitch
+  * use it as kind of Avatar on Twitch
+  * show how easy it is
+  * use as much ruby as possible
 
-  # mermaid
-  # relative_height = 90
-  graph LR;
-    Keyboard-->Keygrabber;
-    Keygrabber-->WebApp;
-    WebApp-->OBS;
+  # image
+  # src = img/step1.png
+  # align = bottom
 
 = Excurse Vtuber/PNGtuber
 
@@ -61,21 +72,31 @@
 
 = Lets go deeper in the rabbit whole
 
+  # image
+  # src = img/rabithole.jpg
+  # relative_height = 90
+
 = mruby
+
+  * for embed or \nlinking in applications
+  * ruby 3.x syntax
+  * nice for rubists \nthat like to solder
 
   # image
   # src = img/mruby.png
   # relative_height = 70
   # align = right
 
-  * for embed or linking in applications
-  * ruby 3.x syntax
-  * nice for rubists that like to solder
-
 = picoruby
 
-  * alternative mruby implementation
-  * aims for a perfect fit for raspberry pi pico
+  * alternative mruby\nimplementation
+  * aims for a perfect \nfit for raspberry pi pico
+  * even smaller then mruby
+
+  # image
+  # src = img/picoruby.png
+  # relative_height = 70
+  # align = right
 
 = PRK
 
@@ -93,17 +114,291 @@
 
   * 6 buttons
   * direct scan
-  * really not that complicated
-
-= RP2040
-
-  * Boot in 
+  * really not that \ncomplicated
 
   # image
-  # src = img/soldered_1.jpg
+  # src = img/duplex.png
   # relative_height = 70
   # align = right
 
+= RP2040
+
+  * small single chip computer
+  * can run picoruby
+  * 30 pins
+  * use like a usb drive
+
+  # image
+  # src = img/rp2040.jpg
+  # relative_height = 70
+  # align = right
+
+= How to install PRK on the RP2040
+
+  * holding BOOTSEL button pressed
+  * plug in
+  * drag and drop prk firmware on it
+
+= README greeting
+
+    PRK Firmware 0.9.23 (20231119 revision 0c8a999)
+
+    Welcome to PRK Firmware!
+
+    Usage:
+    - Drag and drop your `keymap.rb` into this directory
+    - Then, your keyboard will be automatically rebooted. That's all!
+
+    Notice:
+    - Make sure you always have a backup of your `keymap.rb`
+      because upgrading prk_firmware-*.uf2 may remove it from flash
+
+    https://github.com/picoruby/prk_firmware
+
+= prk keymap
+
+    kbd = Keyboard.new
+
+    kbd.init_direct_pins(
+      [ 
+        3, 4, 5, 
+        0, 1, 2 
+      ]
+    )
+
+    kbd.add_layer :default, %i(
+      KC_F13 KC_F14 KC_F15 
+      KC_F16 KC_F17 KC_F18
+    )
+
+    kbd.start!
+
+= The Keyboard Case
+
+  * 3d printed
+  * fits the controller
+  * and a lot of wires
+
+  # image
+  # src = img/case.png
+  # relative_height = 70
+  # align = right
+
+= Lots of wires
+
+  # image
+  # src = img/lots_of_wires.jpg
+  # relative_height = 90
+
+= what's next?
+
+  * running keyboard
+  * We need some key grabber
+
+  # image
+  # src = img/step2.png
+  # relative_height = 90
+  # align = bottom
+
+= how to grab keys in windows
+
+  * get information about keypressed
+  * need to be in the background
+
+= first try
+
+  * lets search for gems
+  * most libraries just work in foreground
+
+= second try
+
+  * autohotkey the solution?
+  * ruby api
+  * could be the solution!
+  * or not?
+
+= autohotkey and games
+
+  * banned in some games, because of anti cheat
+  * sadly exactly the game I want to play
+
+  # image
+  # src = img/hunt.png
+  # relative_height = 100
+  # align = bottom
+
+= third try
+
+  * do I really need that all?
+  * ffi should be enough
+  * just on windows
+
+= key grabber
+
+  * lets look inside the windows api
+
+  # image
+  # src = img/get_async_key_state.png
+  # relative_height = 90
+  # align = bottom
+  
+
+= key grabber
+
+    require 'ffi'
+
+    class KeyStateChecker
+      extend FFI::Library
+      ffi_lib :user32
+
+      attach_function :GetAsyncKeyState, [:int], :short
+
+      def f13_pressed?
+        get_key_state(0x7C) != 0
+      end
+    end
+
+= key grabber fire webhooks
+
+  * idea is to have a rails app that accept webhooks
+  * notify webhook on key press
+
+      if key_state_checker.f13_pressed?
+        puts "F13 was pressed"
+        HTTParty.get('http://localhost:3000/characters/1/move_head')
+      end
+
+= what's next?
+
+  * a rails application
+  * accepting webhooks for animations
+
+  # image
+  # src = img/step3.png
+  # relative_height = 90
+  # align = bottom
+
+= webapp
+
+  * start a new rails application
+  * I think that everyone here has done it already
+
+= webapp controller 
+
+  * scaffold the webhook controller in rails
+
+= Avatar
+
+  * long long time ago
+  * Lila Laune Bär
+
+  # image
+  # src = img/lilalaunebaer.jpg
+  # relative_height = 70
+  # align = right
+
+= Bird of Metty
+
+  * Metty drawings
+  * my kid drawings
+
+  # image
+  # src = img/mettydrawing.png
+  # relative_height = 70
+  # align = right
+
+= Bird of Joschka
+
+  * lot of small pieces
+  * used for animation later
+  * do you see the \nsimilarities?
+
+  # image
+  # src = img/bird_parts.png
+  # relative_height = 80
+  # align = right
+
+= Stuck together
+
+  * put parts with css together
+  * add css animation for \nmovement
+
+  # image
+  # src = img/birb.png
+  # relative_height = 100
+  # align = right
+
+= Idea of animation
+
+  * attach css classes via webhook
+  * controller already exists
+  * include action cable
+
+= controller - move_head endpoint
+
+      def move_head
+        message = { action: 'move_head' }
+        ActionCable.server.broadcast("avatar_channel", message.to_json)
+        head :ok
+      end
+
+= javascript
+
+    function addHeadShakeAnimation() {
+      addClassToElement('avatar-head', 'avatar-head-animation-shake');
+      setTimeout(function() {
+        removeClassFromElement('avatar-head', 'avatar-head-animation-shake');
+      }, 6000);
+    }
+
+= css animation
+
+    .avatar-head-animation-shake {
+      animation: 3s infinite shake-head alternate;
+    }
+
+    @keyframes shake-head {
+      80%,
+      100% {
+        transform: rotate(5deg);
+      }
+    }
+
+= from ruby hardware to animation in browser
+
+  * what do we have now
+  * a keyboard running picoruby
+  * a key grabber written in ruby
+  * a web application using rails
+  * sadly the next step won't include ruby
+
+  # image
+  # src = img/step4.png
+  # relative_height = 90
+  # align = bottom
+
+= get the bird in the stream
+
+  * obs
+  * used by a lot of streamers
+  * could also be used in video calls ;)
+
+= bird in obs
+
+  * just create a browser source
+  * put the url to the avatar inside
+  * crop it to size
+
+= final result
+
+  * bird in stream
+  * controlled by ruby
+
+  # image
+  # src = img/step5.png
+  # relative_height = 90
+  # align = bottom
+
 = The End
 
-  * Thank you a lot for listing :)
+  * Thank you for listing
